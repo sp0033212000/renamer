@@ -1,0 +1,25 @@
+{
+  "name": "arranger",
+  "version": "1.0.0",
+  "main": "index.js",
+  "license": "MIT",
+  "bin": {
+    "renamer": "./app.ts"
+  },
+  "devDependencies": {
+    "@types/node": "^16.11.13",
+    "prettier": "^2.5.1",
+    "ts-node": "^10.4.0",
+    "typescript": "^4.5.4"
+  },
+  "dependencies": {
+    "@types/cli-progress": "^3.9.2",
+    "@types/inquirer": "^8.1.3",
+    "@types/keypress": "^2.0.30",
+    "@types/mime": "^2.0.3",
+    "cli-progress": "^3.9.1",
+    "inquirer": "^8.2.0",
+    "keypress": "^0.2.1",
+    "mime": "^3.0.0"
+  }
+}
