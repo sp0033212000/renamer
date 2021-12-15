@@ -1,4 +1,4 @@
-# Renamer
+# Renamer (This is a tool for personal purpose.)
 
 ### Re-name the file as dirname
 
