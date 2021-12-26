@@ -77,11 +77,16 @@ const MEDIA_REGEX = /^video\/.*/;
 
   fs.readdirSync(TARGET_DIR)
     .filter((dir) => !dir.match(/^\..*/))
-    .map((dirname) => {
+    .forEach((dirname) => {
       let DIR_PATH = path.join(TARGET_DIR, dirname);
 
       if (!mime.getType(dirname)) {
-        fs.readdirSync(DIR_PATH).map((filename) => {
+        const videos: Array<{
+          path: string;
+          mimeType: string;
+          filename: string;
+        }> = [];
+        fs.readdirSync(DIR_PATH).forEach((filename) => {
           const FILE_PATH = path.join(DIR_PATH, filename);
           if (filename.match(/.*.(js)|(torrent)$/)) {
             console.log(`remove file ${filename}`);
@@ -90,12 +95,17 @@ const MEDIA_REGEX = /^video\/.*/;
 
           const mimeType = mime.getType(FILE_PATH) || "";
           if (mimeType.match(MEDIA_REGEX)) {
-            const extension = mime.getExtension(mimeType);
-            fs.renameSync(FILE_PATH, `${DIR_PATH}/${dirname}.${extension}`);
-            console.log(
-              `rename file name: ${filename} -> ${dirname}.${extension}`
-            );
+            videos.push({ path: FILE_PATH, mimeType, filename });
           }
+        });
+        const isVideoMoreThanOne = videos.length > 1;
+        videos.forEach(({ path, mimeType, filename }, index) => {
+          const extension = mime.getExtension(mimeType);
+          const newName = `${dirname}${
+            isVideoMoreThanOne ? `-${index}` : ""
+          }.${extension}`;
+          fs.renameSync(path, `${DIR_PATH}/${newName}`);
+          console.log(`rename file name: ${filename} -> ${newName}`);
         });
       } else if (mime.getType(dirname)?.match(MEDIA_REGEX)) {
         const REAL_DIR_PATH = DIR_PATH.substring(0, DIR_PATH.lastIndexOf("."));
